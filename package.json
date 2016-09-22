@@ -1,5 +1,5 @@
 {
-  "name": "barriseapi",
+  "name": "riseapi",
   "version": "1.0.0",
   "description": "----------------------------------\r Yodlee PFM/Aggregation Sample Apps\r ----------------------------------\r  - Yodlee Sample Apps/Libraries can be used :\r \ti)  To Consume Yodlee PFM/Aggregation API's \r \tii) Provides seamless interaction to Yodlee API's",
   "main": "gulpfile.js",
