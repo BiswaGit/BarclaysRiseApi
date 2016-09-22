@@ -8,7 +8,7 @@
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "gulp": "^3.9.1",
-    /*"gulp-nodemon": "^2.1.0",*/
+    "gulp-nodemon": "^2.1.0",
     "mongoose": "^4.6.0",
     "save": "^2.3.0"
   },
@@ -20,7 +20,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BiswaGit/BarclaysRiseApi.git"
+    "url": "git+https://github.com/BiswaGit/apirise16.git"
   },
   "keywords": [
     "Barclays",
@@ -28,7 +28,7 @@
     "API"
   ],
   "bugs": {
-    "url": "https://github.com/BiswaGit/BarclaysRiseApi/issues"
+    "url": "https://github.com/BiswaGit/apirise16/issues"
   },
-  "homepage": "https://github.com/BiswaGit/BarclaysRiseApi#readme"
+  "homepage": "https://github.com/BiswaGit/apirise16#readme"
 }
