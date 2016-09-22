@@ -7,6 +7,7 @@ var bodeyparser= require('body-parser');
 var globalApp = require(path.resolve('Global.js'));
 var configApp = require(path.resolve('Config.js'));
 var request = require('request');
+var port = process.env.port||2000;
 var app= express();
 app.use(bodeyparser.urlencoded({extended:true}));
 app.use(bodeyparser.json());
@@ -40,11 +41,11 @@ router.route('/accounts')
 
 
 app.get('/',function (req,res) {
-    res.send("hi all0");
+    res.send("WELCOME TO RISE HACKATHON...");
 });
 
-app.listen(2000,function () {
-   console.log("running on port 2000");
+app.listen(port,function () {
+   console.log("running on port :"+ port);
 });
 
 
@@ -157,9 +158,9 @@ function accountDetails(usertoken,cobrandtoken,resp){
                    //     console.log(gson.account[i].id + ' - ' + gson.account[i].CONTAINER + ' - ' + gson.account[i].accountName + ' - ' + (gson.account[i].balance !== undefined ? gson.account[i].balance.amount : '0'));
                    // }
                     resp.json(response.body);
+                }else {
+                    resp.json(response);
                 }
-
-        resp.json(response);
 
     })
 }
