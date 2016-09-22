@@ -1,42 +1,54 @@
-/*
-* Created by Biswa on 9/21/2016.
-*/
+/**
+ * Created by Ashish on 9/20/2016.
+ */
 var express =require('express');
-var app=express();
-var port = process.env.PORT || 3000;
-var userRouter=express.Router();
-
-/* Yodlee Files*/
 var path = require('path');
-var bodyparser= require('body-parser');
+var bodeyparser= require('body-parser');
 var globalApp = require(path.resolve('Global.js'));
 var configApp = require(path.resolve('Config.js'));
 var request = require('request');
 var app= express();
-app.use(bodyparser.urlencoded({extended:true}));
-app.use(bodyparser.json());
-
-app.use('/riseapi',userRouter);
+app.use(bodeyparser.urlencoded({extended:true}));
+app.use(bodeyparser.json());
 
 
-userRouter.route('/userlogin')
+var router= express.Router();
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+next();
+});
+app.use('/api',router);
+
+
+router.route('/login')
     .post(function (req,res) {
 console.log("req "+req.body.username);
-     userLogin(req.body.username,req.body.password,res);
+     cobracndLogin(req.body.username,req.body.password,res);
+
+    });
+router.route('/accounts')
+    .post(function (req,res) {
+        console.log("req "+req.body.usertoken);
+        accountDetails(req.body.usertoken,req.body.cobrandtoken,res);
 
     });
 
-app.get('/', function (req,res) {
-    res.send('Welcome to Rise Hackathon...');
+
+
+
+app.get('/',function (req,res) {
+    res.send("hi all0");
 });
 
-app.listen(port, function () {
-    console.log('Gulp is running my app on Port:' + port);
-
+app.listen(2000,function () {
+   console.log("running on port 2000");
 });
 
-/* User Login Web API*/
-function userLogin(username,password,resp)
+
+function cobracndLogin(username,password,resp)
 {
 
     globalApp.properties.options.url = configApp.properties.baseURL
@@ -47,13 +59,16 @@ function userLogin(username,password,resp)
     globalApp.properties.options.headers = globalApp.properties.headers;
     globalApp.properties.options.json = configApp.properties.cobrandParam;
 
+
+
+
         request(
             globalApp.properties.options,
 
             function (error, response, body) {
-                //console.log("form"+JSON.stringify(response));
+
                 if (error) {
-                    resp.json({ "success" : "false"});
+                    resp.json({ "success" : "false","cobrandSession":"","userSession":""});
                     return console.log('Error in Cobrand login: ', error);
                     console.log("error");
 
@@ -85,18 +100,17 @@ function userLogin(username,password,resp)
                     {console.log(username);
                         globalApp.properties.options.json = configApp.properties.userParam4;
                     }
-                    else
-                    {
-                        resp.json({ "success" : "false"});
-                    }
+					else
+					{
+						resp.json({ "success" : "false","cobrandSession":"","userSession":""});
+					}
                     //Invoking user login API
                     request(
                         globalApp.properties.options,
                         function (error, response, body) {
 
                             if (error) {
-                                resp.json({ "success" : "false"});
-                                console.log("error");
+                                resp.json({ "success" : "false","cobrandSession":"","userSession":""});
                                 return console.log('Error in User login: ',
                                     error);
 
@@ -104,15 +118,48 @@ function userLogin(username,password,resp)
                             if (!error && response.statusCode == 200) {
 
                                 //var jsonObj = JSON.parse(body);
-                                console.log("success");
                                 console.log(username);
                                 globalApp.properties.userSessionToken = body.user.session.userSession;
 
-                                resp.json({ "success" : "true"});
+                                resp.json({ "success" : "true","cobrandSession":globalApp.properties.cobSessionToken,"userSession":globalApp.properties.userSessionToken});
                             }
 
                         })
                 }
             })
 
+
+}
+
+function accountDetails(usertoken,cobrandtoken,resp){
+    //Setting the input parameters for Account API Call
+    globalApp.properties.options.url = configApp.properties.baseURL + globalApp.properties.accountURL;
+    globalApp.properties.options.method = globalApp.properties.get;
+    globalApp.properties.options.headers.Authorization = 'userSession='+usertoken+', cobSession='+cobrandtoken;
+    //Invoking the Account API Call
+
+    request(globalApp.properties.options,  function  (error,  response,  body)  {
+
+        console.log("error "+error);
+        console.log("response "+response);
+        console.log("body "+body);
+        if (error) {
+            resp.json({ "success" : "false","accounts":""});
+            return console.log('Error in Cobrand login: ', error);
+            console.log("error");
+
+        }
+
+                if  (!error  &&  response.statusCode  ==  200) {
+                  //  var gson = JSON.parse(body);
+                    console.log(body);
+                   // for (var i = 0; i < gson.account.length; i++) {
+                   //     console.log(gson.account[i].id + ' - ' + gson.account[i].CONTAINER + ' - ' + gson.account[i].accountName + ' - ' + (gson.account[i].balance !== undefined ? gson.account[i].balance.amount : '0'));
+                   // }
+                    resp.json(response.body);
+                }
+
+        resp.json(response);
+
+    })
 }

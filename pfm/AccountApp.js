@@ -37,20 +37,15 @@ function accountDetails(){
 	globalApp.properties.options.url = configApp.properties.baseURL + globalApp.properties.accountURL;
 	globalApp.properties.options.method = globalApp.properties.get;
 	globalApp.properties.options.headers.Authorization = 'userSession='+globalApp.properties.userSessionToken+', cobSession='+globalApp.properties.cobSessionToken;
-	console.log(globalApp.properties.userSessionToken);
 	//Invoking the Account API Call
 	console.log('-----------------------------------------------------');
 	console.log('Account : Account Id, Container, AccountName, Balance');
 	console.log('-----------------------------------------------------');
 	request(globalApp.properties.options,  function  (error,  response,  body)  {
-		console.log(error);
-		console.log(response);
-		console.log(body);
 		if(body.length >2) {
 			if(!(body.indexOf("errorCode") > 0)) {
 				if  (!error  &&  response.statusCode  ==  200)  {
-					console.log(body);
-					var gson = JSON.parse('ash'+body);
+					var gson = JSON.parse(body);
 					for(var i = 0; i<gson.account.length; i++) {
 						console.log(gson.account[i].id + ' - ' + gson.account[i].CONTAINER + ' - ' + gson.account[i].accountName + ' - ' + (gson.account[i].balance !== undefined ? gson.account[i].balance.amount : '0'));
 					}
