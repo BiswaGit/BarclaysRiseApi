@@ -178,9 +178,31 @@ router.route('/getPasscode')
             if(err)
                 console.log(err);
             else
+            {
                 res.json(passcode);
+                /* delete passcode after sending to customer*/
+            }
+
         });
         //res.json(responsejson);
+    });
+
+//delete post code
+
+router.route('/deletePasscode')
+    .get(function (req,res) {
+        var query = req.query;
+        //res.json(responsejson);
+        passcode.find(query,function(err,passcode){
+            if(err)
+                console.log(err);
+            else
+            {
+                res.json(passcode);
+                /* delete passcode after sending to customer*/
+            }
+
+        }).remove().exec();
     });
 
 
@@ -208,6 +230,18 @@ router.route('/getQrcode')
                 res.json(qrscan);
         });
         //res.json(responsejson);
+    });
+
+router.route('/deleteQrcode')
+    .get(function (req,res) {
+        var query = req.query;
+        //res.json(responsejson);
+        qrscan.find(query,function(err,qrscan){
+            if(err)
+                console.log(err);
+            else
+                res.json(qrscan);
+        }).remove().exec();
     });
 
 
