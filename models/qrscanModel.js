@@ -10,6 +10,12 @@ var qrscanModel = new Schema({
     accountnumber:{
         type: String
     },
+    destuserid:{
+        type: String
+    },
+    destaccountnumber:{
+        type: String
+    },
     amount:{
         type: String
     },

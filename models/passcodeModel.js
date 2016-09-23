@@ -16,6 +16,9 @@ var passcodeModel = new Schema({
     passcode:{
         type: String
     },
+    atmpin:{
+        type:String
+    },
     expiry:{
         type: Date
     }
