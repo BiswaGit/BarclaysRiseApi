@@ -2,6 +2,7 @@
  * Created by Ashish on 9/20/2016.
  */
 var express =require('express');
+var mongoose = require('mongoose');
 var path = require('path');
 var bodeyparser= require('body-parser');
 var globalApp = require(path.resolve('Global.js'));
@@ -12,6 +13,10 @@ var app= express();
 app.use(bodeyparser.urlencoded({extended:true}));
 app.use(bodeyparser.json());
 
+/*Mongodb*/
+var db = mongoose.connect('mongodb://dbrise:dbrise@ds035796.mlab.com:35796/dbrise16');
+var passcode=require('./models/passcodeModel');
+var qrscan=require('./models/qrscanModel');
 
 var router= express.Router();
 
@@ -164,3 +169,53 @@ function accountDetails(usertoken,cobrandtoken,resp){
 
     })
 }
+
+router.route('/getPasscode')
+    .get(function (req,res) {
+        var query = req.query;
+        //var responsejson={hello:"this is my api"};
+        passcode.find(query,function(err,passcode){
+            if(err)
+                console.log(err);
+            else
+                res.json(passcode);
+        });
+        //res.json(responsejson);
+    });
+
+
+router.route('/addPasscode')
+    .post(function(req, res){
+
+        req.body.passcode=Math.floor(Math.random()*90000)+10000; /*Random 5 digit passcode*/
+        var d1 = new Date();
+        var d2= new Date(d1);
+        d2.setHours(d1.getHours()+2);
+        req.body.expiry=d2; /*Random 5 digit passcode*/
+        var pc = new passcode(req.body);
+        pc.save();
+        res.send(pc);
+    });
+
+router.route('/getQrcode')
+    .get(function (req,res) {
+        var query = req.query;
+        //var responsejson={hello:"this is my api"};
+        qrscan.find(query,function(err,qrscan){
+            if(err)
+                console.log(err);
+            else
+                res.json(qrscan);
+        });
+        //res.json(responsejson);
+    });
+
+
+router.route('/addQrcode')
+    .post(function(req, res){
+
+        req.body.status="Active";
+        var qr = new qrscan(req.body);
+        qr.save();
+        res.send(qr);
+    });
