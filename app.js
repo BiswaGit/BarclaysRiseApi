@@ -89,31 +89,35 @@ function cobracndLogin(username,password,resp)
                     globalApp.properties.headers.Authorization = 'cobSession='
                         + globalApp.properties.cobSessionToken;
 
-                    if(username=="ashish" && password=="ashish") {
-                        console.log(username);
+                if(username.toUpperCase()==="ashish".toUpperCase() && password.toUpperCase()==="ashish".toUpperCase()) {
+                    console.log(username);
 
-                        globalApp.properties.options.json = configApp.properties.userParam1;
-                    }
-                    else if(username=="sonali" && password=="sonali")
-                    {console.log(username);
-                        globalApp.properties.options.json = configApp.properties.userParam2;
-                    }
-                    else if(username=="biswa" && password=="biswa")
-                    {console.log(username);
-                        globalApp.properties.options.json = configApp.properties.userParam3;
-                    }
-                    else if(username=="kishore" && password=="kishore")
-                    {console.log(username);
-                        globalApp.properties.options.json = configApp.properties.userParam4;
-                    }
-					else
-					{
-						resp.json({ "success" : "false","cobrandSession":"","userSession":""});
-					}
-                    //Invoking user login API
-                    request(
-                        globalApp.properties.options,
-                        function (error, response, body) {
+                    globalApp.properties.options.json = configApp.properties.userParam1;
+                }
+                else if(username.toUpperCase()==="sonali".toUpperCase() && password.toUpperCase()==="sonali".toUpperCase())
+                {console.log(username);
+                    globalApp.properties.options.json = configApp.properties.userParam2;
+                }
+                else if(username.toUpperCase()==="biswa".toUpperCase() && password.toUpperCase()==="biswa".toUpperCase())
+                {console.log(username);
+                    globalApp.properties.options.json = configApp.properties.userParam3;
+                }
+                else if(username.toUpperCase()==="kishore".toUpperCase() && password.toUpperCase()==="kishore".toUpperCase())
+                {console.log(username);
+                    globalApp.properties.options.json = configApp.properties.userParam4;
+                }
+                else if(username.toUpperCase()==="kasturi".toUpperCase() && password.toUpperCase()==="kasturi".toUpperCase())
+                {console.log(username);
+                    globalApp.properties.options.json = configApp.properties.userParam4;
+                }
+                else
+                {
+                    resp.json({ "success" : "false","cobrandSession":"","userSession":""});
+                }
+                //Invoking user login API
+                request(
+                    globalApp.properties.options,
+                    function (error, response, body) {
 
                             if (error) {
                                 resp.json({ "success" : "false","cobrandSession":"","userSession":""});
