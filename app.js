@@ -174,15 +174,17 @@ router.route('/getPasscode')
     .get(function (req,res) {
         var query = req.query;
         //var responsejson={hello:"this is my api"};
-        passcode.find(query,function(err,passcode){
+        passcode.findOne(query,function(err,passcode){
             if(err)
                 console.log(err);
-            else
-            {
-                res.json(passcode);
-                /* delete passcode after sending to customer*/
+            else{
+            	if(passcode){
+            		res.json(passcode);
+            	}
+            	else{
+            		res.json({"_id":""});
+            	}
             }
-
         });
         //res.json(responsejson);
     });
@@ -223,11 +225,17 @@ router.route('/getQrcode')
     .get(function (req,res) {
         var query = req.query;
         //var responsejson={hello:"this is my api"};
-        qrscan.find(query,function(err,qrscan){
+        qrscan.findOne(query,function(err,qrscan){
             if(err)
                 console.log(err);
-            else
-                res.json(qrscan);
+            else{
+            	if(qrscan){
+            		res.json(qrscan);
+            	}
+            	else{
+            		res.json({"_id":""});
+            	}
+            }
         });
         //res.json(responsejson);
     });
